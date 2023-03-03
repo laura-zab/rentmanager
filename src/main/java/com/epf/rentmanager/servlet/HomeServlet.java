@@ -32,7 +32,7 @@ public class HomeServlet extends HttpServlet {
 
 		try {
 			request.setAttribute("nbClients", clientService.count());
-			request.setAttribute("nbVoitures", vehicleService.count());
+			request.setAttribute("nbVehicles", vehicleService.count());
 			request.setAttribute("nbResas", reservationService.count());
 		} catch (ServiceException e) {
 			throw new RuntimeException(e);

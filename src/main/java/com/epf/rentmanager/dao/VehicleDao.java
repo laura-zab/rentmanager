@@ -34,11 +34,12 @@ public class VehicleDao {
 
 			ps.setString(1, vehicle.getConstructeur());
 			ps.setInt(2, vehicle.getNb_places());
+			ps.execute();
 
 			ResultSet resultSet = ps.getGeneratedKeys();
+			resultSet.next();
 			int id = resultSet.getInt(1);
 
-			ps.execute();
 
 			ps.close();
 			connection.close();

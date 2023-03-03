@@ -13,6 +13,7 @@ public class Test {
 
         try {
             System.out.println(ReservationService.getInstance().findResaByClientId(1));
+            System.out.println(VehicleService.getInstance().findAll());
         } catch (ServiceException e) {
             e.printStackTrace();
         }
