@@ -6,12 +6,14 @@
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/dao/ClientDao.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/modele/Reservation.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/persistence/FillDatabase.java
+/Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/ClientListServlet.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/modele/Vehicle.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/VehicleListServlet.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/service/VehicleService.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/exception/ServiceException.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/exception/DaoException.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/HomeServlet.java
+/Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/ClientCreateServlet.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/dao/ReservationDao.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/persistence/ConnectionManager.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/service/ClientService.java

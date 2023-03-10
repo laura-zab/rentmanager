@@ -41,8 +41,10 @@ public class ReservationDao {
 			ps.setInt(2, reservation.getVehicleId());
 			ps.setDate(3, Date.valueOf(reservation.getDebut()));
 			ps.setDate(4, Date.valueOf(reservation.getFin()));
+			ps.execute();
 
 			ResultSet resultSet = ps.getGeneratedKeys();
+			resultSet.next();
 			int id = resultSet.getInt(1);
 
 			ps.execute();

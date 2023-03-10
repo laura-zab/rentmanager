@@ -49,6 +49,18 @@ public class ReservationService {
         }
     }
 
+    public List<Reservation> findResaByVehicleId(int clientId) throws ServiceException {
+        if (clientId<0) {
+            throw new RuntimeException("L'ID est inférieur à 0");
+        }
+        try {
+            return ReservationDao.getInstance().findResaByVehicleId(clientId);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            throw new ServiceException();
+        }
+    }
+
     public List<Reservation> findAll() throws ServiceException {
         try {
             return ReservationDao.getInstance().findAll();
