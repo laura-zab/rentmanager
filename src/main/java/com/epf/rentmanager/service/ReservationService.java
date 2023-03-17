@@ -10,28 +10,20 @@ import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
 import com.epf.rentmanager.modele.Reservation;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReservationService {
 
     private ReservationDao reservationDao;
-    public static ReservationService instance;
 
-    private ReservationService() {
-        this.reservationDao = ReservationDao.getInstance();
+    private ReservationService(ReservationDao reservationDao) {
+        this.reservationDao = reservationDao;
     }
-
-    public static ReservationService getInstance() {
-        if (instance == null) {
-            instance = new ReservationService();
-        }
-
-        return instance;
-    }
-
 
     public long create(Reservation reservation) throws ServiceException {
         try {
-            return ReservationDao.getInstance().create(reservation);
+            return reservationDao.create(reservation);
         } catch (DaoException e) {
             throw new ServiceException();
         }
@@ -42,7 +34,7 @@ public class ReservationService {
             throw new RuntimeException("L'ID est inférieur à 0");
         }
         try {
-            return ReservationDao.getInstance().findResaByClientId(clientId);
+            return reservationDao.findResaByClientId(clientId);
         } catch (DaoException e) {
             e.printStackTrace();
             throw new ServiceException();
@@ -54,7 +46,7 @@ public class ReservationService {
             throw new RuntimeException("L'ID est inférieur à 0");
         }
         try {
-            return ReservationDao.getInstance().findResaByVehicleId(clientId);
+            return reservationDao.findResaByVehicleId(clientId);
         } catch (DaoException e) {
             e.printStackTrace();
             throw new ServiceException();
@@ -63,7 +55,7 @@ public class ReservationService {
 
     public List<Reservation> findAll() throws ServiceException {
         try {
-            return ReservationDao.getInstance().findAll();
+            return reservationDao.findAll();
         } catch (DaoException e) {
             throw new ServiceException();
         }
