@@ -2,6 +2,7 @@ package com.epf.rentmanager.servlet;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
 import com.epf.rentmanager.service.ClientService;
+import com.epf.rentmanager.utils.Clients;
 import org.h2.engine.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -22,6 +23,8 @@ public class ClientCreateServlet extends HttpServlet {
     @Autowired
     ClientService clientService;
 
+    Clients clients;
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -41,7 +44,9 @@ public class ClientCreateServlet extends HttpServlet {
             client.setPrenom(request.getParameter("first_name"));
             client.setEmail(request.getParameter("email"));
             client.setNaissance(LocalDate.parse(request.getParameter("naissance")));
-            clientService.create(client);
+            if (clients.isLegal(client) && clients.namesLengthOK(client)) {
+                clientService.create(client);
+            }
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }

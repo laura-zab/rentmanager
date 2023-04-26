@@ -2,6 +2,7 @@ package com.epf.rentmanager.servlet;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
 import com.epf.rentmanager.modele.Reservation;
+import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
@@ -14,10 +15,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-@WebServlet("/users")
-public class ClientListServlet extends HttpServlet {
+@WebServlet("/vehicles/details")
+public class VehicleDetailsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Autowired
@@ -25,6 +27,9 @@ public class ClientListServlet extends HttpServlet {
 
     @Autowired
     ReservationService reservationService;
+
+    @Autowired
+    VehicleService vehicleService;
 
     @Override
     public void init() throws ServletException {
@@ -36,32 +41,20 @@ public class ClientListServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            request.setAttribute("clients", clientService.findAll());
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
-
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
             int id = Integer.valueOf(request.getParameter("id"));
-            Client client = clientService.findById(id);
-            boolean present = false;
-            for (Reservation reservation : reservationService.findAll()) {
-                if (id == reservation.getClientId()) {
-                    present = true;
-                    break;
-                }
+            List<Reservation> rents = reservationService.findResaByVehicleId(id);
+            List<Client> clients = new ArrayList<>();
+            for (Reservation rent : rents) {
+                clients.add(clientService.findById(rent.getClientId()));
             }
-            if (!present) {
-                clientService.delete(client);
-            }
-            request.setAttribute("clients", clientService.findAll());
+            request.setAttribute("rents", rents);
+            request.setAttribute("clients", clients);
+            request.setAttribute("clientService", clientService);
+            request.setAttribute("vehicle", vehicleService.findById(id));
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-        }
+
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/details.jsp").forward(request, response);
     }
+}

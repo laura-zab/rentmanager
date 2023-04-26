@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-@WebServlet("/users")
-public class ClientListServlet extends HttpServlet {
+@WebServlet("/users/delete")
+public class ClientDeleteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Autowired
@@ -32,19 +32,7 @@ public class ClientListServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        try {
-            request.setAttribute("clients", clientService.findAll());
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
-
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
             Client client = clientService.findById(id);
@@ -62,6 +50,5 @@ public class ClientListServlet extends HttpServlet {
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-        }
-    }
+        response.sendRedirect("../users");    }
+}

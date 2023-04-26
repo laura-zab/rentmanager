@@ -1,10 +1,8 @@
 package com.epf.rentmanager.servlet;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
-import com.epf.rentmanager.modele.Reservation;
 import com.epf.rentmanager.service.ClientService;
-import com.epf.rentmanager.service.ReservationService;
-import com.epf.rentmanager.service.VehicleService;
+import org.h2.engine.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -16,15 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-@WebServlet("/users")
-public class ClientListServlet extends HttpServlet {
+
+@WebServlet("/users/edit")
+public class ClientEditServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Autowired
     ClientService clientService;
-
-    @Autowired
-    ReservationService reservationService;
 
     @Override
     public void init() throws ServletException {
@@ -34,34 +30,31 @@ public class ClientListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         try {
-            request.setAttribute("clients", clientService.findAll());
+            int id = Integer.valueOf(request.getParameter("id"));
+            request.setAttribute("client", clientService.findById(id));
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
-
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/edit.jsp").forward(request, response);
     }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int id = Integer.valueOf(request.getParameter("id"));
-            Client client = clientService.findById(id);
-            boolean present = false;
-            for (Reservation reservation : reservationService.findAll()) {
-                if (id == reservation.getClientId()) {
-                    present = true;
-                    break;
-                }
-            }
-            if (!present) {
-                clientService.delete(client);
-            }
-            request.setAttribute("clients", clientService.findAll());
+            Client client = new Client();
+            client.setId(Integer.valueOf(request.getParameter("id")));
+            client.setNom(request.getParameter("last_name"));
+            client.setPrenom(request.getParameter("first_name"));
+            client.setEmail(request.getParameter("email"));
+            client.setNaissance(LocalDate.parse(request.getParameter("naissance")));
+            request.setAttribute("client", client);
+            clientService.edit(client);
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-        }
+
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/edit.jsp").forward(request, response);
+
     }
+}

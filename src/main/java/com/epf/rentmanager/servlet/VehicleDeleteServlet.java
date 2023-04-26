@@ -2,6 +2,7 @@ package com.epf.rentmanager.servlet;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
 import com.epf.rentmanager.modele.Reservation;
+import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
@@ -16,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-@WebServlet("/users")
-public class ClientListServlet extends HttpServlet {
+@WebServlet("/vehicles/delete")
+public class VehicleDeleteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Autowired
-    ClientService clientService;
+    VehicleService vehicleService;
 
     @Autowired
     ReservationService reservationService;
@@ -32,36 +33,23 @@ public class ClientListServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        try {
-            request.setAttribute("clients", clientService.findAll());
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
-
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
-            Client client = clientService.findById(id);
+            Vehicle vehicle = vehicleService.findById(id);
             boolean present = false;
             for (Reservation reservation : reservationService.findAll()) {
-                if (id == reservation.getClientId()) {
+                if (id == reservation.getVehicleId()) {
                     present = true;
                     break;
                 }
             }
             if (!present) {
-                clientService.delete(client);
+                vehicleService.delete(vehicle);
             }
-            request.setAttribute("clients", clientService.findAll());
+            request.setAttribute("vehicles", vehicleService.findAll());
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/list.jsp").forward(request, response);
-        }
-    }
+        response.sendRedirect("../cars");    }
+}

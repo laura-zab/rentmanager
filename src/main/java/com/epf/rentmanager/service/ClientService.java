@@ -28,6 +28,22 @@ public class ClientService {
 		}
 	}
 
+	public long delete(Client client) throws ServiceException {
+		try {
+			return clientDao.delete(client);
+		} catch (DaoException e) {
+			throw new ServiceException();
+		}
+	}
+
+	public long edit(Client client) throws ServiceException {
+		try {
+			return clientDao.edit(client);
+		} catch (DaoException e) {
+			throw new ServiceException();
+		}
+	}
+
 	public Client findById(long id) throws ServiceException {
 		if (id<0) {
 			throw new RuntimeException("L'ID est inférieur à 0");

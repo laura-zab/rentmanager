@@ -35,20 +35,20 @@
                                     <th>Action</th>
                                 </tr>
                                 <tr>
-                                <c:forEach items="${rents}" var="rent">
-                                    <td>${rent.id}.</td>
+                                <c:forEach items="${rents}" var="rent" varStatus="loop">
+                                    <td>${loop.index + 1}.</td>
                                     <td>${vehicles.findById(rent.vehicleId).constructeur}</td>
                                     <td>${clients.findById(rent.clientId).nom} ${clients.findById(rent.clientId).prenom}</td>
                                     <td>${rent.debut}</td>
                                     <td>${rent.fin}</td>
                                     <td>
-                                        <a class="btn btn-primary disabled" href="${pageContext.request.contextPath}/cars?id=1">
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/rents/details?id=${rent.id}">
                                             <i class="fa fa-play"></i>
                                         </a>
-                                        <a class="btn btn-success disabled" href="#">
+                                        <a class="btn btn-success" href="${pageContext.request.contextPath}/rents/edit?id=${rent.id}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger disabled" href="#">
+                                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/rents/delete?id=${rent.id}">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
