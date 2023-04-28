@@ -4,6 +4,7 @@ import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.VehicleService;
 import com.epf.rentmanager.utils.Utils;
+import com.epf.rentmanager.utils.Vehicles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -17,7 +18,9 @@ import java.io.IOException;
 @WebServlet("/vehicles/edit")
 public class VehicleEditServlet extends HttpServlet {
 
-    Utils utils;
+    private Utils utils = new Utils();
+    private Vehicles vehiclesUtils = new Vehicles();
+
     @Autowired
     VehicleService vehicleService;
     @Override
@@ -45,7 +48,9 @@ public class VehicleEditServlet extends HttpServlet {
             vehicle.setConstructeur(manufacturer);
             vehicle.setId(id);
             vehicle.setNb_places(seats);
-            vehicleService.edit(vehicle);
+            if (vehiclesUtils.validVehicle(vehicle)) {
+                vehicleService.edit(vehicle);
+            }
             request.setAttribute("vehicle", vehicle);
         } catch (ServiceException e) {
             throw new RuntimeException(e);

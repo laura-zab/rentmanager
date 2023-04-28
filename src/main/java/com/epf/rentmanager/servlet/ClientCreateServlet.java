@@ -22,8 +22,8 @@ public class ClientCreateServlet extends HttpServlet {
     @Autowired
     ClientService clientService;
 
-    Clients clientsUtils;
-    Utils utils;
+    private Clients clientsUtils = new Clients();
+    private Utils utils = new Utils();
 
     @Override
     public void init() throws ServletException {

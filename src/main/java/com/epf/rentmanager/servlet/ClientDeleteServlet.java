@@ -21,13 +21,10 @@ import java.time.LocalDate;
 public class ClientDeleteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    Clients clientsUtils;
+    private Clients clientsUtils = new Clients();
 
     @Autowired
     ClientService clientService;
-
-    @Autowired
-    ReservationService reservationService;
 
     @Override
     public void init() throws ServletException {

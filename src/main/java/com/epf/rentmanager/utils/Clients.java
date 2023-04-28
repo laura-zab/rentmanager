@@ -6,13 +6,27 @@ import com.epf.rentmanager.modele.Reservation;
 import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
+@Service
 public class Clients {
-    private static ClientService clientService;
-    private static ReservationService reservationService;
+
+    @Autowired
+    ClientService clientService;
+
+    @Autowired
+    ReservationService reservationService;
+
+    public Clients() {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 
     /**
      * Renvoie true si l’utilisateur passé en paramètre a un âge >= 18 ans
@@ -20,7 +34,7 @@ public class Clients {
      * @return Résultat du test (>= 18 ans)
      */
 
-    public static boolean isLegal(Client client) {
+    public boolean isLegal(Client client) {
         return
             (Period.between(client.getNaissance(), LocalDate.now()).getYears() >= 18);
     }
@@ -30,7 +44,7 @@ public class Clients {
      * @param client L'instance d’utilisateur à tester
      * @return Résultat du test (> 3 lettres)
      */
-    public static boolean namesLengthOK(Client client) {
+    public boolean namesLengthOK(Client client) {
         return
                 (client.getNom().length() >= 3 && client.getPrenom().length() >= 3);
     }
@@ -40,11 +54,12 @@ public class Clients {
      * @param client
      * @return
      */
-    public static boolean emailNotInDB(Client client) throws ServiceException {
+    public boolean emailNotInDB(Client client) throws ServiceException {
         boolean notInDB = true;
         for (Client client_db:clientService.findAll()) {
-            if (client_db.getEmail() == client.getEmail()) {
+            if (Objects.equals(client_db.getEmail(), client.getEmail())) {
                 notInDB = false;
+                break;
             }
         }
         return notInDB;
@@ -55,7 +70,7 @@ public class Clients {
      * @param client
      * @return
      */
-    public static long delete(Client client) throws ServiceException {
+    public long delete(Client client) throws ServiceException {
         for (Reservation reservation : reservationService.findAll()) {
             if (client.getId() == reservation.getClientId()) {
                 reservationService.delete(reservation);
@@ -69,7 +84,7 @@ public class Clients {
      * @param client
      * @return
      */
-    public static boolean validDate(Client client) {
+    public boolean validDate(Client client) {
         return
                 client.getNaissance() != null;
     }

@@ -3,22 +3,31 @@ package com.epf.rentmanager.utils;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
 import com.epf.rentmanager.modele.Reservation;
+import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.time.Period;
 
+@Service
 public class Reservations {
 
-    private static ReservationService reservationService;
-    private static VehicleService vehicleService;
+    @Autowired
+    ReservationService reservationService;
+
+    public Reservations() {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 
     /**
      * Vérifie qu'une voiture n'est pas réservée 2 fois le même jour
      * @param reservation
      * @return
      */
-    public static boolean validDate(Reservation reservation) throws ServiceException {
+    public boolean validDate(Reservation reservation) throws ServiceException {
         boolean valid_date = true;
         for (Reservation reservation_db:reservationService.findAll()) {
             if(reservation_db.getVehicleId()==reservation.getVehicleId() &&
@@ -36,7 +45,7 @@ public class Reservations {
      * @param reservation
      * @return
      */
-    public static boolean lessThan7Days(Reservation reservation) throws ServiceException {
+    public boolean lessThan7Days(Reservation reservation) {
         return
                 Period.between(reservation.getDebut(), reservation.getFin()).getDays() <= 7;
     }
@@ -46,17 +55,17 @@ public class Reservations {
      * @param reservation
      * @return
      */
-    public static boolean lessThan30Days(Reservation reservation) throws ServiceException {
-        boolean valid_date = true;
+    public boolean lessThan30Days(Reservation reservation) throws ServiceException {
         int consecutive_days = 0;
         Reservation previous_reservation = reservationService.findAll().get(0);
         for (Reservation reservation_db:reservationService.findAll()) {
-            if(reservation_db.getVehicleId() == reservation.getVehicleId() && previous_reservation.getVehicleId() == reservation_db.getVehicleId()) {
-                consecutive_days += Period.between(reservation_db.getFin(), reservation.getDebut()).getDays();
+            if(reservation_db.getVehicleId() == reservation.getVehicleId()
+                    && Period.between(previous_reservation.getFin(), reservation_db.getDebut()).getDays() == 1) {
+                consecutive_days += Period.between(reservation_db.getDebut(), reservation_db.getFin()).getDays();
+                previous_reservation = reservation_db;
             } else {
                 consecutive_days = 0;
             }
-            previous_reservation = reservation_db;
         }
         if (Period.between(previous_reservation.getFin(), reservation.getDebut()).getDays() == 1) {
             consecutive_days += Period.between(reservation.getDebut(), reservation.getFin()).getDays();

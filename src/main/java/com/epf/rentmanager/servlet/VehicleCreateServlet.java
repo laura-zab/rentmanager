@@ -21,7 +21,8 @@ import java.io.IOException;
 public class VehicleCreateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    Utils utils;
+    private Utils utils = new Utils();
+    private Vehicles vehiclesUtils = new Vehicles();
 
     @Autowired
     VehicleService vehicleService;
@@ -44,7 +45,9 @@ public class VehicleCreateServlet extends HttpServlet {
             int nb_places = utils.readInt(request.getParameter("seats"));
             long id = vehicleService.count() + 1;
             Vehicle vehicle = new Vehicle(id, constructeur, nb_places);
-            vehicleService.create(vehicle);
+            if (vehiclesUtils.validVehicle(vehicle)) {
+                vehicleService.create(vehicle);
+            }
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }

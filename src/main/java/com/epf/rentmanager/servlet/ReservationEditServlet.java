@@ -6,6 +6,7 @@ import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.utils.Reservations;
 import com.epf.rentmanager.utils.Utils;
 import org.h2.engine.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ import java.util.List;
 public class ReservationEditServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    Utils utils;
+    private Utils utils = new Utils();
+    private Reservations reservationsUtils = new Reservations();
 
     @Autowired
     ClientService clientService;
@@ -66,7 +68,9 @@ public class ReservationEditServlet extends HttpServlet {
             request.setAttribute("rent", reservation);
             request.setAttribute("vehicles", vehicleService.findAll());
             request.setAttribute("clients", clientService.findAll());
-            reservationService.edit(reservation);
+            if(reservationsUtils.validDate(reservation) && reservationsUtils.lessThan7Days(reservation) && reservationsUtils.lessThan30Days(reservation)) {
+                reservationService.edit(reservation);
+            }
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }

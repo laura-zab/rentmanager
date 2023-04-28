@@ -15,13 +15,16 @@
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/modele/Vehicle.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/ClientEditServlet.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/ReservationEditServlet.java
+/Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/utils/Vehicles.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/service/VehicleService.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/configuration/WebConfiguration.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/persistence/ConnectionManager.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/service/ReservationService.java
+/Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/utils/Utils.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/dao/VehicleDao.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/ClientDeleteServlet.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/configuration/AppConfiguration.java
+/Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/utils/Reservations.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/VehicleEditServlet.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/ClientDetailsServlet.java
 /Users/Laura_1/Desktop/EPF4A/S8/Langage Java/TP rentmanager/rentmanager/src/main/java/com/epf/rentmanager/servlet/VehicleListServlet.java
