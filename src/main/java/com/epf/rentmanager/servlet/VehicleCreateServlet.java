@@ -4,6 +4,9 @@ import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.utils.Utils;
+import com.epf.rentmanager.utils.Vehicles;
+import org.apache.taglibs.standard.tei.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -17,6 +20,8 @@ import java.io.IOException;
 @WebServlet("/cars/create")
 public class VehicleCreateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    Utils utils;
 
     @Autowired
     VehicleService vehicleService;
@@ -36,7 +41,7 @@ public class VehicleCreateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String constructeur = request.getParameter("manufacturer");
-            int nb_places = Integer.valueOf(request.getParameter("seats"));
+            int nb_places = utils.readInt(request.getParameter("seats"));
             long id = vehicleService.count() + 1;
             Vehicle vehicle = new Vehicle(id, constructeur, nb_places);
             vehicleService.create(vehicle);

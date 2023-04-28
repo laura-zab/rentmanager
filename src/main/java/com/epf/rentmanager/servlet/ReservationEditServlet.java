@@ -6,6 +6,7 @@ import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.utils.Utils;
 import org.h2.engine.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -24,6 +25,8 @@ import java.util.List;
 @WebServlet("/rents/edit")
 public class ReservationEditServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    Utils utils;
 
     @Autowired
     ClientService clientService;
@@ -58,8 +61,8 @@ public class ReservationEditServlet extends HttpServlet {
             reservation.setId(Integer.valueOf(request.getParameter("id")));
             reservation.setClientId(Integer.valueOf(request.getParameter("client")));
             reservation.setVehicleId(Integer.valueOf(request.getParameter("car")));
-            reservation.setDebut(LocalDate.parse(request.getParameter("begin")));
-            reservation.setFin(LocalDate.parse(request.getParameter("end")));
+            reservation.setDebut(utils.readDate(request.getParameter("begin")));
+            reservation.setFin(utils.readDate(request.getParameter("end")));
             request.setAttribute("rent", reservation);
             request.setAttribute("vehicles", vehicleService.findAll());
             request.setAttribute("clients", clientService.findAll());

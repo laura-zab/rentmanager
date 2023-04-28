@@ -1,7 +1,9 @@
 package com.epf.rentmanager.servlet;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
+import com.epf.rentmanager.utils.Clients;
 import com.epf.rentmanager.service.ClientService;
+import com.epf.rentmanager.utils.Utils;
 import org.h2.engine.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -21,6 +23,9 @@ public class ClientEditServlet extends HttpServlet {
 
     @Autowired
     ClientService clientService;
+
+    Clients clientsUtils;
+    Utils utils;
 
     @Override
     public void init() throws ServletException {
@@ -47,9 +52,12 @@ public class ClientEditServlet extends HttpServlet {
             client.setNom(request.getParameter("last_name"));
             client.setPrenom(request.getParameter("first_name"));
             client.setEmail(request.getParameter("email"));
-            client.setNaissance(LocalDate.parse(request.getParameter("naissance")));
+            client.setNaissance(utils.readDate(request.getParameter("naissance")));
             request.setAttribute("client", client);
-            clientService.edit(client);
+            if (clientsUtils.isLegal(client) && clientsUtils.namesLengthOK(client)
+                    && clientsUtils.emailNotInDB(client) && clientsUtils.validDate(client)) {
+                clientService.create(client);
+            }
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }

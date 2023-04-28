@@ -6,6 +6,7 @@ import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.utils.Vehicles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -20,6 +21,8 @@ import java.time.LocalDate;
 @WebServlet("/vehicles/delete")
 public class VehicleDeleteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    Vehicles vehiclesUtils;
 
     @Autowired
     VehicleService vehicleService;
@@ -37,16 +40,7 @@ public class VehicleDeleteServlet extends HttpServlet {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
             Vehicle vehicle = vehicleService.findById(id);
-            boolean present = false;
-            for (Reservation reservation : reservationService.findAll()) {
-                if (id == reservation.getVehicleId()) {
-                    present = true;
-                    break;
-                }
-            }
-            if (!present) {
-                vehicleService.delete(vehicle);
-            }
+            vehiclesUtils.delete(vehicle);
             request.setAttribute("vehicles", vehicleService.findAll());
         } catch (ServiceException e) {
             throw new RuntimeException(e);

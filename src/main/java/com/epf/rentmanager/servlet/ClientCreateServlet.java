@@ -3,7 +3,7 @@ import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Client;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.utils.Clients;
-import org.h2.engine.SysProperties;
+import com.epf.rentmanager.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 
 
 @WebServlet("/users/create")
@@ -23,7 +22,8 @@ public class ClientCreateServlet extends HttpServlet {
     @Autowired
     ClientService clientService;
 
-    Clients clients;
+    Clients clientsUtils;
+    Utils utils;
 
     @Override
     public void init() throws ServletException {
@@ -43,8 +43,9 @@ public class ClientCreateServlet extends HttpServlet {
             client.setNom(request.getParameter("last_name"));
             client.setPrenom(request.getParameter("first_name"));
             client.setEmail(request.getParameter("email"));
-            client.setNaissance(LocalDate.parse(request.getParameter("naissance")));
-            if (clients.isLegal(client) && clients.namesLengthOK(client)) {
+            client.setNaissance(utils.readDate(request.getParameter("naissance")));
+            if (clientsUtils.isLegal(client) && clientsUtils.namesLengthOK(client)
+                    && clientsUtils.emailNotInDB(client) && clientsUtils.validDate(client)) {
                 clientService.create(client);
             }
         } catch (ServiceException e) {

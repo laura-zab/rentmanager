@@ -3,6 +3,7 @@ package com.epf.rentmanager.servlet;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.modele.Vehicle;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -15,6 +16,8 @@ import java.io.IOException;
 
 @WebServlet("/vehicles/edit")
 public class VehicleEditServlet extends HttpServlet {
+
+    Utils utils;
     @Autowired
     VehicleService vehicleService;
     @Override
@@ -37,7 +40,7 @@ public class VehicleEditServlet extends HttpServlet {
         try{
             int id = Integer.valueOf(request.getParameter("id"));
             String manufacturer = request.getParameter("manufacturer");
-            int seats = Integer.valueOf(request.getParameter("seats"));
+            int seats = utils.readInt(request.getParameter("seats"));
             Vehicle vehicle = new Vehicle();
             vehicle.setConstructeur(manufacturer);
             vehicle.setId(id);

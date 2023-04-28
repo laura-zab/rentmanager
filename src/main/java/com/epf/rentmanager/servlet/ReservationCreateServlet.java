@@ -5,6 +5,7 @@ import com.epf.rentmanager.modele.Reservation;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.utils.Utils;
 import org.h2.engine.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -20,6 +21,8 @@ import java.time.LocalDate;
 @WebServlet("/rents/create")
 public class ReservationCreateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    Utils utils;
 
     @Autowired
     ClientService clientService;
@@ -53,8 +56,8 @@ public class ReservationCreateServlet extends HttpServlet {
             Reservation reservation = new Reservation();
             reservation.setVehicleId(Integer.valueOf(request.getParameter("car")));
             reservation.setClientId(Integer.valueOf(request.getParameter("client")));
-            reservation.setDebut(LocalDate.parse(request.getParameter("begin")));
-            reservation.setFin(LocalDate.parse(request.getParameter("end")));
+            reservation.setDebut(utils.readDate(request.getParameter("begin")));
+            reservation.setFin(utils.readDate(request.getParameter("end")));
             reservationService.create(reservation);
         } catch (ServiceException e) {
             throw new RuntimeException(e);

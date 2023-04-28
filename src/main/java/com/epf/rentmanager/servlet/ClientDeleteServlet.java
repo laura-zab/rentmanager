@@ -5,6 +5,7 @@ import com.epf.rentmanager.modele.Reservation;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.utils.Clients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -19,6 +20,8 @@ import java.time.LocalDate;
 @WebServlet("/users/delete")
 public class ClientDeleteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    Clients clientsUtils;
 
     @Autowired
     ClientService clientService;
@@ -36,16 +39,7 @@ public class ClientDeleteServlet extends HttpServlet {
         try {
             int id = Integer.valueOf(request.getParameter("id"));
             Client client = clientService.findById(id);
-            boolean present = false;
-            for (Reservation reservation : reservationService.findAll()) {
-                if (id == reservation.getClientId()) {
-                    present = true;
-                    break;
-                }
-            }
-            if (!present) {
-                clientService.delete(client);
-            }
+            clientsUtils.delete(client);
             request.setAttribute("clients", clientService.findAll());
         } catch (ServiceException e) {
             throw new RuntimeException(e);
